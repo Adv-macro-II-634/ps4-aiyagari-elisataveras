@@ -1,0 +1,8 @@
+    rstar= (alpha)* Kstar^(alpha-1) * Ns^(1-alpha);
+end
+
+% analizing the results 
+
+% Plot the Lorenz curve and compute the wealth gini
+
+
