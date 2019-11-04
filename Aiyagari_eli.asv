@@ -77,11 +77,11 @@ ret(cons < 0) = -Inf;
  pol_indx = permute(pol_indx, [3 1 2]);
     % KEEP DECSISION RULE        
     g = a(pol_indx); % policy function
+   
     
     
-    % create the q matrix
-    Q = makeQmatrix(pol_indx, P);
-    % SET UP INITITAL DISTRIBUTION
+   
+ % SET UP INITITAL DISTRIBUTION
 Mu = zeros(m,num_a);
 Mu(1, 4) = 1; % initial guess: everyone employed, 0 assets
 
@@ -100,13 +100,13 @@ while mu_tol > 1e-08
     Mu = MuNew ;
 end
    
-    MarketClearing= sum( g(:) .* Mu(:) ); 
+    MarketClearing= sum( g(:) * Mu(:) ); 
     
     % now I need to update the information   and check for market clearing  
 
 
     if MarketClearing-K_guess>= 0.01% price is too low ; too much savinf
-        K_min = (K_min + K_max) / 2; %new q_min must be higher than before   
+        K_min = (K_min + K_max) / 2;   
     else
         K_max = (K_min + K_max) / 2;   
     end 
@@ -121,5 +121,35 @@ end
 % analizing the results 
 
 % Plot the Lorenz curve and compute the wealth gini
+%aggregate income
+agg_wealth = sum(Mu,1) * a' + y_s * sum(Mu,2); % wealth is asset holdings plus incomes
+wealth_dist = [[Mu(1,:), Mu(2,:)]; [a + y_s(1), a + y_s(2)]]';
+[~, ordr] = sort(wealth_dist(:,2), 1);
+wealth_dist = wealth_dist(ordr,:);
+
+%gini
+perc = cumsum( (wealth_dist(:,2) ./ agg_wealth) .* wealth_dist(:,1) );
+gini = 1 - sum( ([0; perc(1:end-1)] + perc) .* wealth_dist(:,1) );
+
+display (['Gini coefficient of ', num2str(gini)]);
+
+%Lorenzcurve
+
+%population percentage given by the stationary distribution
+ pop = Mu(:)';
+ pop = pop(ordr);
+ %cumulative sum population percentage and percentage of income
+ for i = 2:length(Income)
+     perc(i) = perc(i)+perc(i-1);
+     pop(i) = pop(i)+pop(i-1);
+ end
+ 
+ 
+ plot([0 1],[0 1],'r',pop,perc,'--','Linewidth',1);
+ title('Lorenz Curve')
+ xlabel('Cumulative Share from Lowest to Highest Income') 
+ylabel('Cumulative Share of Income')
+legend({'Equality line','Lorenz Curve'},'Location','southeast')
+
 
 
