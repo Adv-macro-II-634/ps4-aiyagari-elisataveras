@@ -20,18 +20,19 @@ m= 5;
 P1=P^100; 
  Pinv = P1(1,:)';
 %agregate invariate labor 
-Ns=exp(zgrid*Pinv);
 zgrid=exp(zgrid);
+Ns=(zgrid*Pinv);
+
 
 %discretizing the assets
 a_lo=a_bar;
-a_hi = 60;%upper bound of grid points
+a_hi = 80;%upper bound of grid points
 num_a = 500; %500;
 a = linspace(a_lo, a_hi, num_a); % asset (row) vector
 
 % INITIAL GUESS FOR CAPITAL
 K_min=0;
-K_max=150;
+K_max=100;
 K_guess=(K_min + K_max) / 2;
 
 n=1;
@@ -43,7 +44,7 @@ while abs(MarkClear) >= 0.01 ;
     
     % CURRENT RETURN (UTILITY) FUNCTION
     cons = bsxfun(@minus, a', r * a);
-    cons = bsxfun(@plus, cons, permute(zgrid, [1 3 2])*w);
+    cons = bsxfun(@plus, cons, permute(zgrid, [1 3 2]).*w);
     ret = (cons .^ (1-sigma)) ./ (1 - sigma); % current period utility
   
 % negative consumption is not possible -> make it irrelevant by assigning
@@ -80,24 +81,23 @@ ret(cons < 0) = -Inf;
  
    
  % SET UP INITITAL DISTRIBUTION
-   Mu = (1/(2*num_a))*ones(2,num_a);
-    %need to do this until is stationary distribution 
-    Mu_tol   = 1;
-    while Mu_tol > 1e-8;   
-    % ITERATE OVER DISTRIBUTIONS
+Mu = zeros(m,num_a);
+Mu(1, 4) = 1; % initial guess: everyone employed, 0 assets
+
+% ITERATE OVER DISTRIBUTIONS
+mu_tol = 1;
+while mu_tol > 1e-08
     [emp_ind, a_ind] = find(Mu > 0); % find non-zero indices
-        
-          MuNew = zeros(size(Mu));
+    
+    MuNew = zeros(size(Mu));
     for ii = 1:length(emp_ind)
-        apr_ind = pol_indx(emp_ind(ii), a_ind(ii)); % which a prime does the policy fn prescribe?
-        MuNew(:, apr_ind) = MuNew(:, apr_ind) + ... % which mass of households goes to which exogenous state?
-            (PI(emp_ind(ii), :) * Mu(emp_ind(ii), a_ind(ii)))';
+        apr_ind = pol_indx(emp_ind(ii), a_ind(ii)); 
+        MuNew(:, apr_ind) = MuNew(:, apr_ind) + ...
+            (P(emp_ind(ii), :) * Mu(emp_ind(ii), a_ind(ii)) )';
     end
-        
-        Mu_tol   = max(abs(MuNew(:)-Mu(:)));
-        Mu= MuNew;
-        
-    end
+    mu_tol = max(abs(MuNew(:) - Mu(:)));   
+    Mu = MuNew ;
+end
    
     aggK= sum( g(:) .* Mu(:) ); 
     
@@ -123,72 +123,3 @@ K_guess = (K_min + K_max)/2 ;
 display (' ') ;
     n=n+1;
 end
-
-% analizing the results 
-
-%plot the policy function:
-
-plot(a,g)
-xlabel('asset') 
-ylabel('Policy Function')
-title('Aiyagari Policy function for each z')
-
-
-
-% Plot the Lorenz curve and compute the wealth gini
-%aggregate income
-%income of each possible z person is 
- income_z1 = r*a+zgrid(1)*w;
- income_z2 = r*a+zgrid(2)*w;
- income_z3 = r*a+zgrid(3)*w;
- income_z4 = r*a+zgrid(4)*w;
- income_z5 = r*a+zgrid(5)*w;
-  %multiply by distribution
-  Income = [income_z1 income_z2 income_z3 income_z4 income_z5].*Mu(:)';
-  
-  %summing total income and sorting income
-  TotalIncome=sum(Income(:));
- [Income sort] = sort(Income);
- %get the percentage 
- perc = Income/TotalIncome;
- %population percentage given by the stationary distribution
- pop = Mu(:)';
- pop = pop(sort);
- %cumulative sum population percentage and percentage of income
- for i = 2:length(Income)
-     perc(i) = perc(i)+perc(i-1);
-     pop(i) = pop(i)+pop(i-1);
- end
- 
- plot([0 1],[0 1],'r',pop,perc,'--','Linewidth',1);
- title('Lorenz Curve')
- xlabel('Cumulative Share from Lowest to Highest Income') 
-ylabel('Cumulative Share of Income')
-legend({'Equality line','Lorenz Curve'},'Location','southeast')
-
-%gini
-perc = cumsum( (wealth_dist(:,2) ./ agg_wealth) .* wealth_dist(:,1) );
-gini = 1 - sum( ([0; perc(1:end-1)] + perc) .* wealth_dist(:,1) );
-
-display (['Gini coefficient of ', num2str(gini)]);
-
-%Lorenzcurve
-
-%population percentage given by the stationary distribution
- pop = Mu(:)';
- pop = pop(ordr);
- %cumulative sum population percentage and percentage of income
- for i = 2:length(Income)
-     perc(i) = perc(i)+perc(i-1);
-     pop(i) = pop(i)+pop(i-1);
- end
- 
- 
- plot([0 1],[0 1],'r',pop,perc,'--','Linewidth',1);
- title('Lorenz Curve')
- xlabel('Cumulative Share from Lowest to Highest Income') 
-ylabel('Cumulative Share of Income')
-legend({'Equality line','Lorenz Curve'},'Location','southeast')
-
-
-
