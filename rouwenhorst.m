@@ -7,10 +7,10 @@
 % n is the number of points in the discrete approximation
 %
 function [zgrid, P] = rouwenhorst(rho,sigma_eps,n)
-
 mu_eps = 0;
 
 q = (rho+1)/2;
+
 nu = ((n-1)/(1-rho^2))^(1/2) * sigma_eps;
 
 P = [q 1-q;1-q q];
@@ -23,6 +23,8 @@ for i=2:n-1
 end
 
 zgrid = linspace(mu_eps/(1-rho)-nu,mu_eps/(1-rho)+nu,n);
+
+
 
 
 

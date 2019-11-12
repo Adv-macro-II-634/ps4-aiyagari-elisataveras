@@ -1,0 +1,128 @@
+\documentclass[12pt]{article}%
+\usepackage[paper=portrait,pagesize]{typearea}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{lscape}
+\usepackage{comment}
+\usepackage[flushleft]{threeparttable}
+\usepackage{float}
+\usepackage[nohead]{geometry}
+\usepackage[singlespacing]{setspace}
+\usepackage[paper=portrait,pagesize]{typearea}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{lscape}
+\usepackage{float}
+\usepackage[nohead]{geometry}
+\usepackage[singlespacing]{setspace}
+\usepackage[bottom]{footmisc}
+\usepackage{indentfirst}
+\usepackage{endnotes}
+\usepackage{graphicx}%
+\usepackage{afterpage}
+\usepackage{subfig}
+\usepackage{rotating}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\DeclareMathOperator*{\Max}{Max}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\def\dotfill#1{\cleaders\hbox to #1{.}\hfill}
+\newcommand\dotline[2][.5em]{\leavevmode\hbox to #2{\dotfill{#1}\hfil}}
+%\usepackage[backend=biber,style=alphabetic,sorting=ynt]{biblatex}
+%\addbibresource{bibliocopulas.bib}
+\usepackage[round,sort,comma,authoryear]{natbib}
+\setcounter{MaxMatrixCols}{30}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\newcommand{\pd}[2]{\frac{\partial#1}{\partial#2}}
+\makeatletter
+\def\@biblabel#1{\hspace*{-\labelsep}}
+\makeatother
+\geometry{left=1in,right=1in,top=1.00in,bottom=1.0in}
+%\renewcommand*\abstractname{Summary}
+
+\begin{document}
+
+\title{Fall 2019 - ECON 634 - Advance Macroeconomics - Problem Set 4}
+\author{Elisa Taveras Pena\footnote{E-mail address: \href{mailto:etavera2@binghamton.edu}{etavera2@binghamton.edu}  }\\
+Binghamton University}
+\maketitle
+
+\sloppy%avoids the breakage of words at the end of lines, by adjusting spaces between words inside the lines
+
+\onehalfspacing
+
+\begin{enumerate}
+	\item Based on the information in the firm maximization prolem, and because of constant return to scale, the firm's FOC are given by:
+	
+	\begin{align*}
+	&w_t= F_N(K_t,1) \numberthis\\
+	&r_t= F_K(K_t,1) \numberthis\\
+	\end{align*}
+	
+	\item 	For the household, we can write the budget constraint  in recursive form as  $c=zw\bar{l}+ra-a'$ 
+	
+	\tab \textbf{ $\bullet$ State variable}: $a,z$ 
+	
+	\tab \textbf{ $\bullet$ Control variable}: $a'$
+	
+	
+	
+	Therefore, the Bellman equation:
+	
+	\begin{align*}
+	&V(a,z)=\Max_{a'\in \Gamma(a,z)} \left\lbrace \frac{\left( zw\bar{l}+ra-a'\right) ^{1-\sigma}}{1-\sigma}+ \beta \sum_{z' \in Z} \Pi(z'|z)V(a',z')\right\rbrace 
+	& \notag \\
+	&\text{subject to} \notag \\
+	& \tab \Gamma(a,z) \in \left[ 0,zw\bar{l}+ra\right] \numberthis\\
+	\end{align*} 
+	
+	\item The aggregate labor is equal to $N^s=1$ using the Rouwenhorst's method. 
+	
+	\item See code.
+	
+	\item See code.
+	
+	\item My code does not finish and get stuck in one interest rate. I decide to add a limit in the iteration and the final (gross) interest rate is: 1.0099. Compare with the complete equilibrium solution, $\frac{1}{\beta}=1.010101$, which means that the interest rate is -0.02\% in the incomplete market. 
+	
+	The policy functions are as follows:
+	
+	The Lorenz curve is like in the second picture:
+	
+	For the Gini value and the 
+	
+	The distribution is more realistic than with the Hugget model. 
+	
+	
+\end{enumerate}
+
+\strut
+
+\onehalfspacing
+
+\end{document}
