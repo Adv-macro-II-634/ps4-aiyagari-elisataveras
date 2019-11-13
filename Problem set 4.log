@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6300) (preloaded format=pdflatex 2017.8.31)  12 NOV 2019 14:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6300) (preloaded format=pdflatex 2017.8.31)  12 NOV 2019 16:05
 entering extended mode
 **"./Problem set 4.tex"
 ("Problem set 4.tex"
@@ -584,21 +584,33 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <7> not available
  [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 128.
- [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 128.
+<policy.png, id=28, 526.96875pt x 395.22656pt>
+File: policy.png Graphic file (type png)
+ <use policy.png>
+Package pdftex.def Info: policy.png used on input line 116.
+(pdftex.def)             Requested size: 296.51398pt x 222.39278pt.
+
+<Lorenz.png, id=29, 526.96875pt x 395.22656pt>
+File: Lorenz.png Graphic file (type png)
+ <use Lorenz.png>
+Package pdftex.def Info: Lorenz.png used on input line 123.
+(pdftex.def)             Requested size: 296.51398pt x 222.39278pt.
+ [2 <./policy.png (PNG copy)> <./Lorenz.png (PNG copy)>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 141.
+ [3]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 141.
  ("Problem set 4.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 128.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 128.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 141.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 141.
 Package rerunfilecheck Info: File `"Problem set 4".out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 128.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 141.
  ) 
 Here is how much of TeX's memory you used:
- 11047 strings out of 493328
- 180129 string characters out of 3136538
+ 11060 strings out of 493328
+ 180283 string characters out of 3136538
  315998 words of memory out of 3000000
- 14444 multiletter control sequences out of 15000+200000
+ 14452 multiletter control sequences out of 15000+200000
  12135 words of font info for 48 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  50i,12n,54p,345b,411s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -614,9 +626,9 @@ s (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files (x
 )/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files (x86)/M
 iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on "Problem set 4.pdf" (2 pages, 133442 bytes).
+Output written on "Problem set 4.pdf" (3 pages, 193068 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 12 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 83 PDF objects out of 1000 (max. 8388607)
+ 14 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

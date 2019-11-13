@@ -36,6 +36,7 @@ K_guess=(K_min + K_max) / 2;
 
 
 %have max iteration, because this doesn't seem to end 
+pfi=30;
 maxiter=20;     
 n=1;
 MarkClear = 1 ;
@@ -70,13 +71,28 @@ ret(cons < 0) = -Inf;
     
     % if distance is larger than tolerance, update current guess and
     % continue, otherwise exit the loop
-    v_guess = vfn;
-    i=i+1;
- end
-
- pol_indx = permute(pol_indx, [3 1 2]);
+    
+     pol_indx = permute(pol_indx, [3 1 2]);
     % KEEP DECSISION RULE        
     g = a(pol_indx); % policy function
+    Z = zgrid(pol_indx); % policy function
+    
+    %calculating return function 
+    conspf = bsxfun(@minus, r  * a', g');
+    conspf = bsxfun(@plus, conspf, (Z'*w));
+    retpf = (conspf .^ (1-sigma)) ./ (1 - sigma); % current period utility  
+    retpfvec = retpf(:);
+    retpfvec_con = v_guess(:);
+    Q = makeQmatrix(pol_indx, P);
+        for pii = 1:pfi
+            retpf_new = retpfvec+beta*Q*retpfvec_con;
+            retpfvec_con = retpf_new;
+        end;
+    v_guess = reshape(retpfvec_con, m, num_a);
+        i=i+1;
+    end;
+
+
  
    
 % SET UP INITITAL DISTRIBUTION
@@ -121,60 +137,3 @@ K_guess = (K_min + K_max)/2 ;
 display (' ') ;
     n=n+1;
 end
-
-% analizing the results 
-
-%plot the policy function:
-
-plot(a,g)
-xlabel('asset') 
-ylabel('Policy Function')
-title('Aiyagari Policy function for each z')
-
-
-
-% Plot the Lorenz curve and compute the wealth gini
-%aggregate income
-%income of each possible z person is 
- income_z1 = r*a+zgrid(1)*w;
- income_z2 = r*a+zgrid(2)*w;
- income_z3 = r*a+zgrid(3)*w;
- income_z4 = r*a+zgrid(4)*w;
- income_z5 = r*a+zgrid(5)*w;
-  %multiply by distribution
-  Income = [income_z1 income_z2 income_z3 income_z4 income_z5].*Mu(:)';
-  
-  %summing total income and sorting income
-  TotalIncome=sum(Income(:));
- [Income sort] = sort(Income);
- %get the percentage 
- perc = Income/TotalIncome;
- %population percentage given by the stationary distribution
- pop = Mu(:)';
- pop = pop(sort);
- %cumulative sum population percentage and percentage of income
- for i = 2:length(Income)
-     perc(i) = perc(i)+perc(i-1);
-     pop(i) = pop(i)+pop(i-1);
- end
- 
- plot([0 1],[0 1],'r',pop,perc,'--','Linewidth',1);
- title('Lorenz Curve')
- xlabel('Cumulative Share from Lowest to Highest Income') 
-ylabel('Cumulative Share of Income')
-legend({'Equality line','Lorenz Curve'},'Location','southeast')
-
-
-%% FIND TOTAL WEALTH DISTRIBUTION AND GINI
-agg_wealth = aggK; % wealth is asset holdings plus incomes
-wealth_dist = [[Mu(1,:), Mu(2,:), Mu(3,:), Mu(4,:), Mu(5,:)]; [r*a+zgrid(1)*w, r*a+zgrid(2)*w,r*a+zgrid(3)*w,r*a+zgrid(4)*w,r*a+zgrid(5)*w]]';
-[~, ordr] = sort(wealth_dist(:,2), 1);
-wealth_dist = wealth_dist(ordr,:);
-
-% see formula on wikipedia for computation of gini in discrete
-% distributions:
-pct_dist = cumsum( (wealth_dist(:,2) ./ agg_wealth) .* wealth_dist(:,1) );
-gini = 1 - sum( ([0; pct_dist(1:end-1)] + pct_dist) .* wealth_dist(:,1) );
-
-display (['Gini coefficient of ', num2str(gini)]);
-
