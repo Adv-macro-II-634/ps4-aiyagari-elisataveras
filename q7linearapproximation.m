@@ -78,41 +78,43 @@ ret(cons < 0) = -Inf;
     % KEEP DECSISION RULE        
     g = a(pol_indx); % policy function
     
-    %value function 
+    %get the value of asset before and after each point 
+    %since my space in my matrix is as follows:0.1804
+    %I use that as spacing
+    g_m= a(pol_indx)-0.1804;  % index before the current one
+    g_p= a(pol_indx)+0.1804;  % index above the current one
+ 
+    a1=g(1,:);
+    a2=g(2,:);
+    a3=g(3,:);
+    a4=g(4,:);
+    a5=g(5,:);
+      
+      
+   %use a for loop to go over the complete 
+   for i = 1:length(a1)
+         
+    %need to do linear approvimation over the possible values 
+    %first, the initial points are two
+    x_low=[g_m g];
+    x_high=[g g_p];
     
-    g_m1= a(pol_indx)-0.1804;  % index before the current one
-    g_p1= a(pol_indx)+0.1804;  % index above the current one
-    
-       %USE THIS AS VGUESS AND DO INTERPOLATION 
-           %interpolate between these two numbers:
-    %linear interpolation between these two numbers:
-   num_int=10;
-   intlow = linspace(g_m1, g, num_int); % asset (row) vector
+    %then the value function is:
+    vf=vfn';
+    %create 10 numbers between the two possible numbes 
+    xi_low = g_m:1/10:g; 
+    xi_high = g:1/10:g_p; 
+       %interpolate
+       interp_l = interp1(x_low,vf,xi_high); 
+ end
    
-   vint1 = interp1(a,vfn(1,:),intlow);
-   vint2 = interp1(a,vfn(2,:),intlow);
-   vint3 = interp1(a,vfn(3,:),intlow);
-   vint4 = interp1(a,vfn(4,:),intlow);
-   vint5 = interp1(a,vfn(5,:),intlow);
-   v_intlow = [vint1; vint2;vint3;vint4;vint5]; %m state times assets states ; %m state times assets states 
-  inthigh = linspace(g, g_p1, num_int); % asset (row) vector
-  
-   vint6 = interp1(a,vfn(1,:),inthigh);
-   vint7 = interp1(a,vfn(2,:),inthigh);
-   vint8 = interp1(a,vfn(3,:),inthigh);
-   vint9 = interp1(a,vfn(4,:),inthigh);
-   vint10 = interp1(a,vfn(5,:),inthigh);
-   v_inthigh = [vint6; vint7;vint8;vint9;vint10]; %m state times assets states ; %m state times assets states 
-    
-    %Golden section search
+        %Golden section search
     
     % ------------------------GOLDEN SECTION METHOD----------------------------
 % -------------------------------------------------------------------------
 % Copyright (c) 2009, Katarzyna Zarnowiec, all rights reserved 
 % mailto: katarzyna.zarnowiec@gmail.com
 % -------------------------------------------------------------------------
-
-figure; hold on;
 
 a=g_m1;                            % start of interval
 b=g_p1;                            % end of interval
@@ -159,13 +161,9 @@ end
 
 % chooses minimum point
 if(f_x1<f_x2)
-    sprintf('x_min=%f', x1)
-    sprintf('f(x_min)=%f ', f_x1)
-    plot(x1,f_x1,'ro')
+    Agold=x1;
 else
-    sprintf('x_min=%f', x2)
-    sprintf('f(x_min)=%f ', f_x2)
-    plot(x2,f_x2,'ro')
+     Agold=x2;
 end
  
    
